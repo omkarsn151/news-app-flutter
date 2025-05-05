@@ -24,26 +24,31 @@ class NewsListScreen extends StatelessWidget {
             if (state is NewsLoading) {
               return const Center(child: CircularProgressIndicator(),);
             } else if (state is NewsLoaded){
-              return ListView.builder(
-                itemCount: state.news.length,
-                itemBuilder: (_, index) {
-                  final news = state.news[index];
-                  return NewsListTile(
-                    news: news, 
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => NewsDetailScreen(news: news), 
-                        ),
-                      );
-                    },
-                  );
-                }
-                );
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<NewsBloc>().add(FetchNews());
+                },
+                child: ListView.builder(
+                  itemCount: state.news.length,
+                  itemBuilder: (_, index) {
+                    final news = state.news[index];
+                    return NewsListTile(
+                      news: news, 
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => NewsDetailScreen(news: news), 
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  ),
+              );
             }
             else if(state is NewsError){
-              return Center(child: Text("Error: ${state.message}"),);
+              return ErrorWidget(context);
             }
             return Center(child: Text("No data"),);
           }),
