@@ -15,5 +15,14 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
        emit(NewsError(e.toString()));
       }
     },);
+    on<FetchNewsByCategory>((event, emit) async {
+      emit(NewsLoading());
+      try {
+        final news = await repository.fetchNewsByCategory(event.category);
+        emit(NewsLoaded(news));
+      } catch (e) {
+        emit(NewsError(e.toString()));
+      }
+    },);
   }
 }

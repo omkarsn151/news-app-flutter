@@ -5,6 +5,7 @@ import 'package:news_app_flutter/features/news/bloc/news_bloc.dart';
 import 'package:news_app_flutter/features/news/bloc/news_event.dart';
 import 'package:news_app_flutter/features/news/bloc/news_state.dart';
 import 'package:news_app_flutter/features/news/presentation/screens/news_detail_screen.dart';
+import 'package:news_app_flutter/features/news/presentation/widgets/category_chips.dart';
 import 'package:news_app_flutter/features/news/presentation/widgets/news_tile.dart';
 import 'package:news_app_flutter/features/news/repository/news_repository.dart';
 
@@ -19,39 +20,50 @@ class NewsListScreen extends StatelessWidget {
         appBar: AppBar(
           title: CustomText(text: "News", fontSize: 20, fontWeight: FontWeight.w600,), 
           centerTitle: true,),
-        body: BlocBuilder<NewsBloc, NewsState>(
-          builder: (context, state){
-            if (state is NewsLoading) {
-              return const Center(child: CircularProgressIndicator(),);
-            } else if (state is NewsLoaded){
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context.read<NewsBloc>().add(FetchNews());
-                },
-                child: ListView.builder(
-                  itemCount: state.news.length,
-                  itemBuilder: (_, index) {
-                    final news = state.news[index];
-                    return NewsListTile(
-                      news: news, 
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => NewsDetailScreen(news: news), 
+        body: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: CategoryChips()),
+              Expanded(
+                child: BlocBuilder<NewsBloc, NewsState>(
+                  builder: (context, state){
+                    if (state is NewsLoading) {
+                      return const Center(child: CircularProgressIndicator(),);
+                    } else if (state is NewsLoaded){
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          context.read<NewsBloc>().add(FetchNews());
+                        },
+                        child: ListView.builder(
+                          itemCount: state.news.length,
+                          itemBuilder: (_, index) {
+                            final news = state.news[index];
+                            return NewsListTile(
+                              news: news, 
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => NewsDetailScreen(news: news), 
+                                  ),
+                                );
+                              },
+                            );
+                          }
                           ),
-                        );
-                      },
-                    );
-                  }
-                  ),
-              );
-            }
-            else if(state is NewsError){
-              return ErrorWidget(context);
-            }
-            return Center(child: Text("No data"),);
-          }),
+                      );
+                    }
+                    else if(state is NewsError){
+                      return ErrorWidget(context);
+                    }
+                    return Center(child: Text("No data"),);
+                  }),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
