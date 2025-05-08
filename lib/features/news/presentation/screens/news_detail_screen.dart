@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_flutter/core/constants/common_widgets/custom_text.dart';
 import 'package:news_app_flutter/data/news_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final NewsModel news;
@@ -140,7 +141,25 @@ class NewsDetailScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () async {
+                            final String link = news.url;
+                            if (link.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Invalid URL.')),
+                              );
+                              return;
+                            }
+
+                            final Uri url = Uri.parse(link);
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Could not open the article.')),
+                              );
+                            }
+                          },
+
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                             decoration: BoxDecoration(
