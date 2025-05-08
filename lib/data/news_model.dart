@@ -1,3 +1,5 @@
+import 'package:timeago/timeago.dart' as timeago;
+
 class NewsModel {
   final String title;
   final String description;
@@ -31,4 +33,7 @@ class NewsModel {
       publishedAt: DateTime.tryParse(json['publishedAt'] ?? '') ?? DateTime.now(),
     );
   }
+}
+String getTimeAgo(DateTime publishedAt) {
+  return timeago.format(publishedAt);
 }
