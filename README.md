@@ -1,16 +1,16 @@
-# news_app_flutter
+# News App Flutter
 
-A new Flutter project.
+A Flutter-based news application that fetches and displays the latest news articles using the BLoC architecture. The app provides a clean UI with features like category filtering, shimmer loading effects, and detailed news views.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **BLoC Architecture**: State management using `flutter_bloc`.
+- **Shimmer Loading Effect**: Displays a shimmer effect while loading news articles.
+- **News Categories**: Filter news by categories.
+- **Detailed News View**: View full details of a news article.
+- **External Links**: Open full articles in the browser using `url_launcher`.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://github.com/user-attachments/assets/7a9863d7-c508-48be-8d81-c72d4d450594)
+![image](https://github.com/user-attachments/assets/86857ff3-3084-4082-9d8b-4099d196ba9b)
